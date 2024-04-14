@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Chatbot</title>
+
+    <!-- css file link -->
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+    <style>
+      html,body{
+  height: 100%;
+}
+body{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /*background: linear-gradient(90deg, rgba(1,1,88,0.82),rgb(1,1,29));*/
+  background-color: #343541;
+  transition: 1s all ease-in-out;
+}
+#init{
+  margin-top: 2rem;
+  background: indianred;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: aliceblue;
+  cursor: pointer;
+}
+.desc p{
+  /*
+  color: rgb(133,153,168);
+  margin: 0;
+  font-weight: 600;
+  */
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+  font-weight: 400;
+}
+.text{
+  font-size: 65px;
+  font-weight: 800;
+  color: cadetblue;
+  margin: 0;
+}
+.parent{
+  position: relative;
+  height: 100%;
+  padding: 0 7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bot-img{
+  width: 20rem;
+  height: 20rem;
+}
+.child{
+  box-shadow: 0 0 2px salmon;
+  border-radius: 15px;
+  height: 30rem;
+  width: 16rem;
+  margin: auto;
+  background: white;
+}
+.header img{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin: 0 0.5rem;
+  border: 1px solid rgb(231,231,231);
+  padding: 5px;
+}
+.header{
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid whitesmoke;
+  background: white;
+  width: 16rem;
+  padding: 5px 0;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  z-index: 1;
+  box-shadow: 0 0 2px rgb(175,175,175);
+}
+.h-child{
+  display: flex;
+  align-items: center;
+}
+.header span{
+  font-size: 13px;
+  margin: 0;
+  padding: 0;
+}
+.refBtn{
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: indianred;
+  font-size: 18px;
+  cursor: pointer;
+}
+.name{
+  font-weight: 600;
+  padding-left: 300;
+}
+.footer{
+  position: absolute;
+  bottom: 0;
+  width: 16rem;
+  background: white;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  color: indianred;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: 0 0 3px rgb(153,153,153);
+}
+#chat-box{
+  position: relative;
+  top: 40px;
+  padding: 8px 10px;
+  font-size: 12px;
+  height: 24.2rem;
+  overflow: auto;
+  background: rgb(224,241,253);
+  text-align: center;
+}
+
+/* these classes will be used in javascript file */
+.msg{
+  background: white;
+  padding: 5px 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  width: max-content;
+  font-size: 14px;
+  color: lightslategrey;
+  box-shadow: 0 0 5px rgb(226,226,226);
+  max-width: 65%;
+  text-align: left;
+}
+.test{
+  text-align: right;
+  margin: 20px 0;
+}
+.rep{
+  background: rgb(253,243,224);
+  color: lightslategray;
+  padding: 5px 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+  font-size: 14px;
+  box-shadow: 0 0 5px rgb(211,211,211);
+}
+.opt{
+  padding: 5px 20px;
+  columns: lightsalmon;
+  border: 1px solid blueviolet;
+  border-radius: 1rem;
+  margin: 0.3rem 0.5rem;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: 500;
+  background: white;
+  text-align: center;
+  font-size: 14px;
+  color: blueviolet;
+}
+.link{
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  color: aliceblue !important;
+  background: blueviolet;
+}
+.m-link{
+  text-decoration: none;
+}
+.link:active{
+  background: white;
+  border: 1px solid blueviolet;
+  color: blueviolet;
+}
+    </style>
+    <!-- font awesome icon cdn-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="parent">
+        <div class="desc">
+            <h1 class="text">Chatbot</h1>
+            <p>Our Educational ChatBot is a powerful tool for teachers and students alike. It helps teachers by automating tasks, delivering extra materials, and giving instant feedback. Teachers can use it to run quizzes, host discussions, and keep track of how students are doing—all within their virtual classroom setup.</p>
+            <button id="init">START CHAT</button>
+        </div>
+        <div>
+            <!--<img src="/chatbot.png" alt="" class="bot-img">-->
+        </div>
+    </div>
+    <div id="test" style="position: fixed;top: 4rem;right: 8rem;display: none;">
+        <div class="child" id="chatbot">
+            <div class="header">
+                <div class="h-child">
+                    <!--<img src="/image.png" alt="avatar" id="avatar">-->
+                    <div>
+                        <span class="name">Chatbot</span>
+                        <br>
+                        <span style="color:lawngreen">online</span>
+                    </div>
+                </div>
+                <div>
+                    <button class="refBtn"><i class="fa fa-refresh" onclick="initChat()"></i></button>
+                </div>
+            </div>
+
+            <div id="chat-box">
+
+            </div>
+            <div class="footer">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- js file  -->
+    <script>
+      var data= {
+  chatinit:{
+      title: ["Hello <span class='emoji'> &#128075;</span>","I am Mr. Chatbot","How can I help you?"],
+      options: ["Movies <span class='emoji'> &#128250;</span>","News","Shopping <span class='emoji'> &#128090;</span>","Music <span class='emoji'> &#127925;</span>"]
+  },
+  movies: {
+      title:["Please select category"],
+      options:['Prime'],
+      url : {
+          link:["https://www.amazon.com/s/?ie=UTF8&keywords=video+movie&index=dvd&tag=mh0b-20&ref=pd_sl_60c2spwq86_p&adgrpid=1337008520460294&hvadid=83563291886799&hvnetw=o&hvqmt=p&hvbmt=bp&hvdev=c&hvlocint=164297&hvlocphy=145635&hvtargid=kwd-83564066487038:loc-190&hydadcr=17038_13438724"]
+      }
+  },
+  
+  news: {
+      title:["Today's Top Headline"],
+      options:["The rare green comet will make its closest pass of Earth between February 1 and February 2, according to NASA."],
+      url : {
+          //more:"https://www.youtube.com/@webhub/videos",
+          link:["https://www.livescience.com/green-comet-c2022-e3-how-to-watch#:~:text=On%20Feb.%201%2C%20a%20bright-green%20comet%20named%20C%2F2022,when%20modern%20humans%20shared%20our%20planet%20with%20Neanderthals."]
+      }
+  },
+  
+  shopping: {
+      title:["Thanks for your response","Welcome to shopping zone <span class='emoji'> &#128090;</span>","Please select one of the below options to proceed further"],
+      options:['Electronics'],
+      url : {
+          
+      }
+  },
+  electronics: {
+      title:["Thanks for your response","Here are some electronic items for you","Click on it to know more"],
+      options:['Televisions'],
+      url : {
+          //more:"https://www.youtube.com/@webhub/videos",
+          link:["https://www.walmart.com/browse/electronics/electronics-by-brand/3944_4131277?adid=22222222264446347498&wmlspartner=wmtlabs&wl0=b&wl1=o&wl2=c&wl3=74835639785364&wl4=dat-2326635323984836:loc-149&wl5=145635&wl6=&wl7=&wl14=online%20electronics%20shopping&veh=sem&&msclkid=df10c84e82b5114a5f01ae5541933bf6&gclid=df10c84e82b5114a5f01ae5541933bf6&gclsrc=3p.ds"]
+      }
+  },
+  /*
+  beauty: {
+      title:["Thanks for your response","Here are some beauty products for you","Click on it to know more"],
+      options:['Make-up & Nails','Skin Care','Fragrance','Hair care'],
+      url : {
+          more:"https://www.youtube.com/@webhub/videos",
+          link:["#","#","#","#"]
+      }
+  },
+  mobiles: {
+      title:["Thanks for your response","These are some results based on your input","Click on it to know more"],
+      options:['Mobile Phones','Cases & Covers','Power Banks','Tablets'],
+      url : {
+          more:"https://www.youtube.com/@webhub/videos",
+          link:["https://www.ndtv.com/science/rare-green-comet-to-make-closest-approach-of-earth-this-week-3734392#:~:text=The%20rare%20green%20comet%20will,February%202%2C%20according%20to%20NASA.&text=A%20rare%20green%20comet%20is,if%20the%20skies%20are%20clear.","#","#","#"]
+      }
+  },
+  
+  
+  men: {
+      title:["Thanks for your response","These are some results based on your input","Click on it to know more"],
+      options:['Clothing','Shirts','T-shirts','Innerwear','Jeans'],
+      url : {
+          more:"https://www.youtube.com/@webhub/videos",
+          link:["#","#","#","#","#"]
+      }
+  },
+  women: {
+      title:["Thanks for your response","These are some results based on your input","Click on it to know more"],
+      options:['Clothing','Western Wear','Ethnic Wear','Top Brands'],
+      url : {
+          more:"https://www.youtube.com/@webhub/videos",
+          link:["#","#","#","#"]
+      }
+  },
+  */
+  music: {
+      title:["These are some latest songs <span class='emoji'> &#127925;</span>"],
+      options: ["song 1"],
+      url : {
+          //more:"https://www.youtube.com/@webhub/videos",
+          link:["https://music.youtube.com/tasteprofile"]
+      }
+  },
+  /*
+  hollywood: {
+      title: ["Thanks for your response","Here are some genre based movies"],
+      options: ["Comedy","Horror","Sci-Fi","Romance","Action"],
+      url: {
+          more:"https://www.youtube.com/@webhub/videos",
+          link:["#","#","#","#","#"]
+      }
+  },
+  */
+  /*
+  bollywood: {
+      title: ["Thanks for your response","Here are some genre based movies"],
+      options: ["Comedy","Horror","Sci-Fi","Romance","Action"],
+      url: {
+          more:"https://www.youtube.com/@webhub/videos",
+          link:["#","#","#","#","#"]
+      }
+  },
+  */
+  /*
+  web: {
+      title: ["Thanks for your response","Here are some genre based web series"],
+      options: ["Comedy","Horror","Sci-Fi","Romance","Action"],
+      url: {
+          more:"https://www.youtube.com/@webhub/videos",
+          link:["#","#","#","#","#"]
+      }
+  },
+  */
+  /*
+  others: {
+      title: ["Here are some more options for you"],
+      options: ["YouTube","Netflix","Amazon Prime","Hot Star"],
+      url: {
+          more:"https://www.youtube.com/",
+          link:["#","#","#","#","#"]
+      }
+  },
+  */
+}
+
+document.getElementById("init").addEventListener("click",showChatBot);
+var cbot= document.getElementById("chat-box");
+
+var len1= data.chatinit.title.length;
+
+function showChatBot(){
+  console.log(this.innerText);
+  if(this.innerText=='START CHAT'){
+      document.getElementById('test').style.display='block';
+      document.getElementById('init').innerText='CLOSE CHAT';
+      initChat();
+  }
+  else{
+      location.reload();
+  }
+}
+
+function initChat(){
+  j=0;
+  cbot.innerHTML='';
+  for(var i=0;i<len1;i++){
+      setTimeout(handleChat,(i*500));
+  }
+  setTimeout(function(){
+      showOptions(data.chatinit.options)
+  },((len1+1)*500))
+}
+
+var j=0;
+function handleChat(){
+  console.log(j);
+  var elm= document.createElement("p");
+  elm.innerHTML= data.chatinit.title[j];
+  elm.setAttribute("class","msg");
+  cbot.appendChild(elm);
+  j++;
+  handleScroll();
+}
+
+function showOptions(options){
+  for(var i=0;i<options.length;i++){
+      var opt= document.createElement("span");
+      var inp= '<div>'+options[i]+'</div>';
+      opt.innerHTML=inp;
+      opt.setAttribute("class","opt");
+      opt.addEventListener("click", handleOpt);
+      cbot.appendChild(opt);
+      handleScroll();
+  }
+}
+
+function handleOpt(){
+  console.log(this);
+  var str= this.innerText;
+  var textArr= str.split(" ");
+  var findText= textArr[0];
+  
+  document.querySelectorAll(".opt").forEach(el=>{
+      el.remove();
+  })
+  var elm= document.createElement("p");
+  elm.setAttribute("class","test");
+  var sp= '<span class="rep">'+this.innerText+'</span>';
+  elm.innerHTML= sp;
+  cbot.appendChild(elm);
+
+  console.log(findText.toLowerCase());
+  var tempObj= data[findText.toLowerCase()];
+  handleResults(tempObj.title,tempObj.options,tempObj.url);
+}
+
+function handleDelay(title){
+  var elm= document.createElement("p");
+      elm.innerHTML= title;
+      elm.setAttribute("class","msg");
+      cbot.appendChild(elm);
+}
+
+
+function handleResults(title,options,url){
+  for(let i=0;i<title.length;i++){
+      setTimeout(function(){
+          handleDelay(title[i]);
+      },i*500)
+      
+  }
+
+  const isObjectEmpty= (url)=>{
+      return JSON.stringify(url)=== "{}";
+  }
+
+  if(isObjectEmpty(url)==true){
+      console.log("having more options");
+      setTimeout(function(){
+          showOptions(options);
+      },title.length*500)
+      
+  }
+  else{
+      console.log("end result");
+      setTimeout(function(){
+          handleOptions(options,url);
+      },title.length*500)
+      
+  }
+}
+
+function handleOptions(options,url){
+  for(var i=0;i<options.length;i++){
+      var opt= document.createElement("span");
+      var inp= '<a class="m-link" href="'+url.link[i]+'">'+options[i]+'</a>';
+      opt.innerHTML=inp;
+      opt.setAttribute("class","opt");
+      cbot.appendChild(opt);
+  }
+  var opt= document.createElement("span");
+  var inp= '<a class="m-link" href="'+url.more+'">'+'See more</a>';
+
+  const isObjectEmpty= (url)=>{
+      return JSON.stringify(url)=== "{}";
+  }
+
+  console.log(isObjectEmpty(url));
+  console.log(url);
+  opt.innerHTML=inp;
+  opt.setAttribute("class","opt link");
+  cbot.appendChild(opt);
+  handleScroll();
+}
+
+function handleScroll(){
+  var elem= document.getElementById('chat-box');
+  elem.scrollTop= elem.scrollHeight;
+}
+
+    </script>
+</body>
+</html>
